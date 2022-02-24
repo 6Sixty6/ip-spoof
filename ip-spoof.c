@@ -1,5 +1,6 @@
 /* SixSixtySix anusO1
- * USAGE: ./ip-spoof [source addr] [destination addr] */
+ * USAGE: ./ipspoof [source addr] [destination addr]
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,7 +71,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	
-	printf("Setting up IP part...\n");
+	printf("Loading.");
 	
 	packet = (u_char*) malloc(PACKET_SIZE);
 	ip_pkg.ip_hl = 5;
@@ -87,9 +88,9 @@ int main(int argc, char* argv[]) {
 	ip_pkg.ip_sum = in_cksum((unsigned short *)&ip_pkg, sizeof(ip_pkg));
 	
 	memcpy(packet, &ip_pkg, sizeof(ip_pkg));
-	printf(" done!\n");
+	printf(".");
 	
-	printf("Setting up ICMP part...\n");
+	printf(".");
 	
 	icmp_pkg.icmp_type = ICMP_ECHO;
 	icmp_pkg.icmp_code = 0;
@@ -100,17 +101,17 @@ int main(int argc, char* argv[]) {
 	
 	memcpy(packet + 20, &icmp_pkg, 8);
 	
-	printf(" done!\n");
+	printf(".");
 	
-	printf("Setting up socket...\n");
+	printf(".");
 	if((sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0 ) {
 		perror("socket");
 		fprintf(stderr, "\n(You have to run as root to use raw sockets...)\n\n");
 		return 1;
 	}
-	printf(" done!\n");
+	printf(".");
 	
-	printf("Telling socket to send my packet without header & enable broadcasting...\n");
+	printf(".");
 	if (setsockopt(sockfd, IPPROTO_IP, IP_HDRINCL,   &yes, sizeof(yes)) < 0 ||
 	    setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &yes, sizeof(yes)) < 0) {
 		perror("setsockopt");
@@ -119,7 +120,7 @@ int main(int argc, char* argv[]) {
 	
 	memset(&iaddr, 0, sizeof(iaddr));
 	
-	printf(" done!\n");
+	printf("\ndone :)\n");
 	
 	iaddr.sin_family = AF_INET;
 	iaddr.sin_addr.s_addr = ip_pkg.ip_dst.s_addr;
