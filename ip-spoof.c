@@ -1,6 +1,5 @@
 /* SixSixtySix anusO1
- * USAGE: ./ipspoof [source addr] [destination addr]
-*/
+ * USAGE: ./ipspoof [source addr] [destination addr] */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
